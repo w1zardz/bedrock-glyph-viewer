@@ -189,8 +189,35 @@ details[open].card summary{margin-bottom:10px}
     <p style="font-size:.72rem;color:var(--text2);margin-top:10px">Клик по <b style="color:var(--green)">свободной</b> странице — скачается пустой прозрачный <code style="font-family:monospace">glyph_XX.png</code> 256×256 (16×16 ячеек по 16px), рисуй прямо в нём.</p>
   </div>
 
-  <!-- HOW PAGES WORK -->
+  <!-- SIZES FOR ARTIST -->
   <details class="card" open>
+    <summary>📏 Размеры — простым языком (читай перед рисованием!)</summary>
+    <div class="guide">
+      <p><b>Любая страница глифов — это таблица 16×16 = 256 клеточек.</b> Размер одной клеточки = ширина картинки ÷ 16:</p>
+      <ul>
+        <li>холст <code>256×256</code> → клетка <b>16×16</b> px (простые иконки — E0, E1, E2...)</li>
+        <li>холст <code>512×512</code> → клетка <b>32×32</b> px (буквы B7)</li>
+        <li>холст <code>1024×1024</code> → клетка <b>64×64</b> px (детальные бейджи рангов — E6, E7)</li>
+      </ul>
+      <p class="warn">⚠️ ВАЖНО: в игре ВСЕ глифы показываются ОДИНАКОВОЙ высоты — примерно с букву текста. Большой холст НЕ делает глиф больше на экране — он делает его ЧЁТЧЕ (больше деталей).</p>
+      <p><b>Какой холст выбрать для новой страницы:</b></p>
+      <ul>
+        <li>простая иконка (монетка, сердечко, стрелка) → <code>256×256</code>, хватит с головой</li>
+        <li>детальный бейдж с градиентами и тенями (как ранги) → <code>1024×1024</code></li>
+        <li>среднее (буквы, значки со шрифтовой чёткостью) → <code>512×512</code></li>
+      </ul>
+      <p><b>Сколько места занимать В клеточке:</b></p>
+      <ul>
+        <li><b>Мини-иконка для текста кнопки</b> (♥ перед «Помощь», $ перед «Скупщик») — рисуй примерно <b>2/3 клетки</b>: клетка 16 → арт 10–11px, клетка 32 → 20–22px, клетка 64 → 40–44px. Низ арта чуть выше низа клетки (2px / 4px / 8px соответственно) — тогда иконка сядет ровно на строку с буквами.</li>
+        <li><b>Жирный бейдж</b> (ранг, лого) — смело на всю клетку.</li>
+      </ul>
+      <p><b>Ширина в игре</b> = ширина твоего рисунка в клетке. Узко нарисовал → узкий символ, широко → широкий. Пустые края клетки в игре не занимают место.</p>
+      <p class="crit">Не оставляй полупрозрачный мусор вокруг рисунка — из-за одного пикселя-призрака в игре появится ГИГАНТСКИЙ пробел. Загрузи страницу сюда — сайт пометит грязные клетки оранжевой точкой.</p>
+    </div>
+  </details>
+
+  <!-- HOW PAGES WORK -->
+  <details class="card">
     <summary>📖 Как работают страницы (B / E / F — в чём разница?)</summary>
     <div class="guide">
       <p><b>Буква в имени — НЕ тип глифа.</b> Это просто hex-адрес страницы Unicode. <code>glyph_F0.png</code> работает точно так же, как <code>glyph_E0.png</code>. Никаких «F-полей» не существует.</p>
@@ -265,31 +292,31 @@ details[open].card summary{margin-bottom:10px}
 <script>
 // ========== PAGE MAP DATA (актуально для RP km_pm5) ==========
 const PAGE_INFO = [
-  { hex:'B7', status:'occupied', desc:'Буквы/шрифт — белые, красятся §-кодами' },
-  { hex:'E0', status:'occupied', desc:'Иконки меню: статуи, топы, VK/TG/Xbox' },
-  { hex:'E1', status:'occupied', desc:'Иконки предметов/UI' },
-  { hex:'E2', status:'occupied', desc:'UI-элементы' },
-  { hex:'E3', status:'free',     desc:'РЕКОМЕНДУЕТСЯ для новых глифов' },
-  { hex:'E4', status:'occupied', desc:'NPC' },
-  { hex:'E5', status:'occupied', desc:'Иконки' },
-  { hex:'E6', status:'occupied', desc:'Ранги/привилегии (бейджи)' },
-  { hex:'E7', status:'occupied', desc:'Анархия' },
-  { hex:'E8', status:'occupied', desc:'Лого' },
-  { hex:'E9', status:'occupied', desc:'Иконки' },
-  { hex:'EA', status:'occupied', desc:'Иконки' },
-  { hex:'EB', status:'free', desc:'Свободна' },
-  { hex:'EC', status:'free', desc:'Свободна' },
-  { hex:'ED', status:'free', desc:'Свободна' },
-  { hex:'EE', status:'free', desc:'Свободна' },
-  { hex:'EF', status:'free', desc:'Свободна' },
-  { hex:'F0', status:'free', desc:'Свободна — работает как E-страницы' },
-  { hex:'F1', status:'free', desc:'Свободна' },
-  { hex:'F2', status:'free', desc:'Свободна' },
-  { hex:'F3', status:'free', desc:'Свободна' },
-  { hex:'F4', status:'free', desc:'Свободна' },
-  { hex:'F5', status:'free', desc:'Свободна' },
-  { hex:'F6', status:'free', desc:'Свободна' },
-  { hex:'F7', status:'free', desc:'Свободна' },
+  { hex:'B7', status:'occupied', size:'512×512',  cell:32, desc:'Буквы/шрифт — белые, красятся §-кодами' },
+  { hex:'E0', status:'occupied', size:'256×256',  cell:16, desc:'Иконки меню: статуи, топы, VK/TG/Xbox' },
+  { hex:'E1', status:'occupied', size:'256×256',  cell:16, desc:'Иконки предметов/UI' },
+  { hex:'E2', status:'occupied', size:'256×256',  cell:16, desc:'UI-элементы' },
+  { hex:'E3', status:'free',     size:'сам выбираешь', cell:0, desc:'РЕКОМЕНДУЕТСЯ для новых глифов' },
+  { hex:'E4', status:'occupied', size:'256×256',  cell:16, desc:'NPC' },
+  { hex:'E5', status:'occupied', size:'256×256',  cell:16, desc:'Иконки' },
+  { hex:'E6', status:'occupied', size:'1024×1024',cell:64, desc:'Ранги/привилегии (детальные бейджи)' },
+  { hex:'E7', status:'occupied', size:'1024×1024',cell:64, desc:'Анархия (детальные бейджи)' },
+  { hex:'E8', status:'occupied', size:'1072×1072',cell:67, desc:'Лого (нестандартный размер — работает, но новые так не делать)' },
+  { hex:'E9', status:'occupied', size:'256×256',  cell:16, desc:'Иконки' },
+  { hex:'EA', status:'occupied', size:'256×256',  cell:16, desc:'Иконки' },
+  { hex:'EB', status:'free', size:'сам выбираешь', cell:0, desc:'Свободна' },
+  { hex:'EC', status:'free', size:'сам выбираешь', cell:0, desc:'Свободна' },
+  { hex:'ED', status:'free', size:'сам выбираешь', cell:0, desc:'Свободна' },
+  { hex:'EE', status:'free', size:'сам выбираешь', cell:0, desc:'Свободна' },
+  { hex:'EF', status:'free', size:'сам выбираешь', cell:0, desc:'Свободна' },
+  { hex:'F0', status:'free', size:'сам выбираешь', cell:0, desc:'Свободна — работает как E-страницы' },
+  { hex:'F1', status:'free', size:'сам выбираешь', cell:0, desc:'Свободна' },
+  { hex:'F2', status:'free', size:'сам выбираешь', cell:0, desc:'Свободна' },
+  { hex:'F3', status:'free', size:'сам выбираешь', cell:0, desc:'Свободна' },
+  { hex:'F4', status:'free', size:'сам выбираешь', cell:0, desc:'Свободна' },
+  { hex:'F5', status:'free', size:'сам выбираешь', cell:0, desc:'Свободна' },
+  { hex:'F6', status:'free', size:'сам выбираешь', cell:0, desc:'Свободна' },
+  { hex:'F7', status:'free', size:'сам выбираешь', cell:0, desc:'Свободна' },
 ];
 // glyph_E011.png существует на сервере — нестандартное легаси-имя, НЕ страница. Не создавать такие.
 
@@ -395,8 +422,12 @@ function renderPageMap() {
     const isLoaded = sheets.has(p.hex);
     chip.className = 'page-chip ' + (isLoaded ? 'loaded' : p.status);
     const statusText = isLoaded ? 'загружена' : (p.status === 'free' ? 'свободна' : 'занята');
+    const sizeLine = p.cell
+      ? `холст ${p.size} · ячейка ${p.cell}×${p.cell}px`
+      : `холст ${p.size} (256/512/1024)`;
     chip.innerHTML = `<div class="name">glyph_${p.hex}.png</div>
       <div class="status">${statusText} · U+${p.hex}00–${p.hex}FF</div>
+      <div class="desc" style="font-family:monospace;color:var(--accent)">${sizeLine}</div>
       <div class="desc">${p.desc}</div>
       ${p.status === 'free' && !isLoaded ? '<div class="dl">⬇</div>' : ''}`;
     chip.addEventListener('click', () => {
