@@ -9,13 +9,14 @@
 :root{
   --bg:#0d1117;--bg2:#161b22;--bg3:#21262d;--border:#30363d;
   --text:#e6edf3;--text2:#8b949e;--accent:#58a6ff;--accent2:#1f6feb;
-  --green:#3fb950;--red:#f85149;--orange:#d29922;
+  --green:#3fb950;--red:#f85149;--orange:#d29922;--purple:#bc8cff;
   --cell-size:min(5.8vw, 56px);--grid-gap:2px;--radius:12px;
 }
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);min-height:100dvh;overflow-x:hidden}
 .container{max-width:1100px;margin:0 auto;padding:12px}
-.header{display:flex;align-items:center;justify-content:space-between;padding:16px 0;border-bottom:1px solid var(--border);margin-bottom:16px}
+.header{display:flex;align-items:center;justify-content:space-between;padding:16px 0;border-bottom:1px solid var(--border);margin-bottom:16px;flex-wrap:wrap;gap:8px}
 .header h1{font-size:1.3rem;font-weight:700}.header h1 span{color:var(--green)}
+.header .sub{font-size:.75rem;color:var(--text2)}
 .card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px}
 .card h2{font-size:.85rem;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;font-weight:600}
 .input-row{display:flex;gap:8px;margin-bottom:8px}
@@ -50,18 +51,51 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .search-result .not-found{color:var(--red);font-weight:600}
 .search-result .found-in{color:var(--text2);font-size:.75rem;margin-top:4px}
 
+/* Page map */
+.page-map{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.page-chip{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:10px 12px;cursor:pointer;transition:all .15s;position:relative}
+.page-chip:active{transform:scale(.97)}
+.page-chip .name{font-family:monospace;font-weight:700;font-size:.9rem}
+.page-chip .status{font-size:.68rem;margin-top:2px}
+.page-chip.occupied{border-left:3px solid var(--orange)}
+.page-chip.occupied .status{color:var(--orange)}
+.page-chip.free{border-left:3px solid var(--green)}
+.page-chip.free .status{color:var(--green)}
+.page-chip.loaded{border-left:3px solid var(--accent)}
+.page-chip.loaded .status{color:var(--accent)}
+.page-chip .desc{font-size:.7rem;color:var(--text2);margin-top:3px;line-height:1.3}
+.page-chip .dl{position:absolute;top:8px;right:8px;font-size:.85rem;opacity:.6}
+.legend{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:10px;font-size:.72rem;color:var(--text2)}
+.legend span::before{content:'';display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:5px}
+.legend .l-occ::before{background:var(--orange)}
+.legend .l-free::before{background:var(--green)}
+.legend .l-loaded::before{background:var(--accent)}
+
+/* Guide */
+.guide{font-size:.83rem;line-height:1.55}
+.guide p{margin-bottom:8px}
+.guide b{color:var(--green)}
+.guide .warn{color:var(--orange)}
+.guide .crit{color:var(--red);font-weight:600}
+.guide code{background:var(--bg3);border:1px solid var(--border);border-radius:4px;padding:1px 6px;font-size:.8rem;font-family:monospace}
+.guide ul{margin:6px 0 10px 18px}
+.guide li{margin-bottom:4px}
+details.card summary{cursor:pointer;font-size:.85rem;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;font-weight:600;user-select:none;list-style:none}
+details.card summary::before{content:'▸ ';color:var(--accent)}
+details[open].card summary::before{content:'▾ '}
+details[open].card summary{margin-bottom:10px}
+
 /* Loaded sheets list */
 .loaded-sheets{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}
 .sheet-tag{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:4px 10px;font-size:.75rem;font-family:monospace;color:var(--text2);display:flex;align-items:center;gap:6px}
 .sheet-tag .dot{width:6px;height:6px;border-radius:50%;background:var(--green)}
 .sheet-tag .remove{cursor:pointer;color:var(--red);font-weight:700;margin-left:2px}
+.sheet-tag .stray-badge{color:var(--orange);font-weight:700}
 
 /* Grid */
 .grid-wrap{overflow:auto;-webkit-overflow-scrolling:touch;border-radius:var(--radius);background:var(--bg2);border:1px solid var(--border);margin-bottom:12px}
-.grid-header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:8px}
-.grid-header h2{margin:0}
-.atlas-info{font-size:.75rem;color:var(--text2)}
-.grid-section-label{padding:8px 16px;font-size:.8rem;font-weight:700;color:var(--accent);background:var(--bg3);border-bottom:1px solid var(--border)}
+.grid-section-label{padding:8px 16px;font-size:.8rem;font-weight:700;color:var(--accent);background:var(--bg3);border-bottom:1px solid var(--border);display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px}
+.grid-section-label .stray-info{color:var(--orange);font-weight:600}
 .glyph-grid{display:grid;grid-template-columns:repeat(16,var(--cell-size));gap:var(--grid-gap);padding:8px;justify-content:center}
 .glyph-grid div{
   width:var(--cell-size);height:var(--cell-size);
@@ -77,6 +111,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .glyph-grid div.transparent{opacity:.25}
 .glyph-grid div.has-img{font-size:0;color:transparent}
 .glyph-grid div.highlight{box-shadow:0 0 0 3px var(--green)!important;z-index:3;transform:scale(1.1);opacity:1!important}
+.glyph-grid div.stray::after{content:'';position:absolute;top:2px;right:2px;width:6px;height:6px;border-radius:50%;background:var(--orange)}
 
 /* Detail overlay */
 .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:100;backdrop-filter:blur(4px)}
@@ -86,18 +121,23 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 @media(min-width:600px){.detail-sheet{border-radius:16px;margin:20px}}
 @keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
 .detail-handle{width:40px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 16px}
-.detail-preview{display:flex;justify-content:center;margin-bottom:16px}
+.detail-preview{display:flex;justify-content:center;margin-bottom:10px}
 .detail-preview img{image-rendering:pixelated;width:128px;height:128px;border-radius:8px;background:repeating-conic-gradient(var(--bg3) 0% 25%,var(--bg) 0% 50%) 0 0/16px 16px}
+.tint-row{display:flex;gap:4px;justify-content:center;flex-wrap:wrap;margin-bottom:12px}
+.tint-row .sw{width:26px;height:26px;border-radius:6px;cursor:pointer;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.6rem;font-weight:700;color:rgba(0,0,0,.55);font-family:monospace}
+.tint-row .sw.reset{background:var(--bg3);color:var(--text2)}
+.tint-hint{text-align:center;font-size:.68rem;color:var(--text2);margin-bottom:12px}
 .detail-meta{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .detail-field{background:var(--bg3);border-radius:8px;padding:10px 12px;cursor:pointer;transition:all .15s;border:1px solid transparent}
 .detail-field:active{border-color:var(--accent);background:rgba(88,166,255,.08)}
 .detail-field .label{font-size:.7rem;color:var(--text2);text-transform:uppercase;letter-spacing:.3px;margin-bottom:2px}
 .detail-field .value{font-family:monospace;font-weight:700;font-size:.9rem;word-break:break-all}
 .detail-field.wide{grid-column:1/-1}
+.detail-field.warn .value{color:var(--orange)}
+.detail-field.ok .value{color:var(--green)}
 .detail-actions{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
 .copied-toast{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:var(--green);color:#000;padding:8px 20px;border-radius:20px;font-weight:700;font-size:.85rem;z-index:200;pointer-events:none;opacity:0;transition:opacity .2s}
 .copied-toast.show{opacity:1}
-.quick-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
 
 /* Converter */
 .converter-row{display:flex;gap:8px}
@@ -109,9 +149,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 <div class="container">
   <div class="header">
     <h1><span>Krip</span>Mine Glyph Tools</h1>
+    <div class="sub">инструмент художника глифов</div>
   </div>
 
-  <!-- SEARCH — главная фича -->
+  <!-- SEARCH -->
   <div class="card">
     <h2>🔍 Поиск по юникоду</h2>
     <div class="search-wrap">
@@ -124,24 +165,60 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 
   <!-- Upload multiple -->
   <div class="card">
-    <h2>📂 Загрузить глиф-листы (можно несколько!)</h2>
+    <h2>📂 Загрузить глиф-листы (можно несколько)</h2>
     <div class="upload-zone" id="uploadZone">
       <input type="file" accept=".png" id="fileInput" multiple>
       <p>📁 Перетащи glyph_XX.png сюда (можно несколько файлов)</p>
     </div>
-    <div class="quick-actions">
-      <button class="btn btn-sm btn-outline" data-hex="E0">E0</button>
-      <button class="btn btn-sm btn-outline" data-hex="E1">E1 Иконки</button>
-      <button class="btn btn-sm btn-outline" data-hex="E2">E2 UI</button>
-      <button class="btn btn-sm btn-outline" data-hex="E4">E4 NPC</button>
-      <button class="btn btn-sm btn-outline" data-hex="E5">E5</button>
-      <button class="btn btn-sm btn-outline" data-hex="E6">E6 Ранги</button>
-      <button class="btn btn-sm btn-outline" data-hex="E7">E7 Анархия</button>
-      <button class="btn btn-sm btn-outline" data-hex="E8">E8 Лого</button>
-      <button class="btn btn-sm btn-outline" data-hex="B7">B7 Буквы</button>
-    </div>
     <div class="loaded-sheets" id="loadedSheets"></div>
+    <p style="font-size:.7rem;color:var(--text2)">Листы сохраняются в браузере — при следующем заходе будут на месте. <span id="clearAllWrap"></span></p>
   </div>
+
+  <!-- PAGE MAP -->
+  <div class="card">
+    <h2>🗺️ Карта страниц glyph_XX — какие имена доступны</h2>
+    <div class="legend">
+      <span class="l-occ">Занята (на сервере)</span>
+      <span class="l-free">Свободна — можно создавать</span>
+      <span class="l-loaded">Загружена сюда</span>
+    </div>
+    <div class="page-map" id="pageMap"></div>
+    <p style="font-size:.72rem;color:var(--text2);margin-top:10px">Клик по <b style="color:var(--green)">свободной</b> странице — скачается пустой прозрачный <code style="font-family:monospace">glyph_XX.png</code> 256×256 (16×16 ячеек по 16px), рисуй прямо в нём.</p>
+  </div>
+
+  <!-- HOW PAGES WORK -->
+  <details class="card" open>
+    <summary>📖 Как работают страницы (B / E / F — в чём разница?)</summary>
+    <div class="guide">
+      <p><b>Буква в имени — НЕ тип глифа.</b> Это просто hex-адрес страницы Unicode. <code>glyph_F0.png</code> работает точно так же, как <code>glyph_E0.png</code>. Никаких «F-полей» не существует.</p>
+      <p><b>Перекрашивается ли глиф §-кодами — зависит только от пикселей PNG:</b></p>
+      <ul>
+        <li><b>Белый/серый</b> рисунок с прозрачностью → красится кодами: <code>"§a\u{E300}"</code> станет зелёным. Так работает <code>glyph_B7</code> (буквы).</li>
+        <li><b>Цветной</b> рисунок → остаётся своей картинкой, коды его не красят. Так работают <code>glyph_E0</code>–<code>EA</code> (иконки).</li>
+      </ul>
+      <p>Каждая страница — PNG-таблица <b>16×16 = 256 глифов</b>. Страница <code>glyph_EB.png</code> покрывает символы <code>U+EB00–U+EBFF</code>: первая ячейка <code>\u{EB00}</code>, вторая <code>\u{EB01}</code> и т.д.</p>
+      <p>Формула позиции: <code>U+XX00 + ряд×16 + колонка</code> (ряды и колонки с нуля).</p>
+      <p>PHP: <code>"\u{E300}"</code> &nbsp;|&nbsp; с цветом: <code>"§a\u{E300}"</code></p>
+    </div>
+  </details>
+
+  <!-- DRAWING GUIDE -->
+  <details class="card">
+    <summary>🎨 Гайд: как рисовать глифы чтобы было красиво</summary>
+    <div class="guide">
+      <p><b>Размер холста страницы:</b> 256×256 (ячейка 16px) — стандарт. Можно 512×512 (ячейка 32px, больше деталей — тот же вид в игре).</p>
+      <p><b>Мини-глифы в тексте кнопок/форм</b> (♥ перед «Помощь», $ перед «Скупщик»):</p>
+      <ul>
+        <li>Рисуй арт <b>~10–11px</b> внутри 16px ячейки, вокруг прозрачность. Тогда иконка в тексте — размером с букву, а не кирпич.</li>
+        <li><b>Низ арта на ~2px от низа ячейки</b> — глиф сядет на строку рядом с буквами, не улетит вверх.</li>
+        <li>Простой силуэт, 1–2 цвета, тёмная обводка 1px. На 10px мелкие детали не читаются.</li>
+      </ul>
+      <p><b>Крупные иконки-бейджи</b> (ранги, лого): можно на всю ячейку 16×16 — они и должны быть жирными.</p>
+      <p class="crit">⚠️ Стрэй-пиксели (альфа 1–9) — главный враг!</p>
+      <p>MCBE меряет ширину символа по крайним непрозрачным пикселям. Один мусорный пиксель с альфой 3 в углу ячейки = <span class="warn">гигантский пробел</span> после глифа в игре. Этот сайт помечает такие ячейки <span class="warn">оранжевой точкой</span> — чисти их (в km_pm5 есть <code>optimize_pngs.py</code>, он чистит автоматом).</p>
+      <p><b>Ширина в игре</b> = ширина непрозрачной части ячейки. Узкий глиф → узкий символ, широкий → широкий.</p>
+    </div>
+  </details>
 
   <!-- Converter -->
   <div class="card">
@@ -161,13 +238,17 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
   <div class="detail-sheet" id="detailSheet">
     <div class="detail-handle"></div>
     <div class="detail-preview"><img id="detailImg" src="" alt="preview"></div>
+    <div class="tint-row" id="tintRow"></div>
+    <div class="tint-hint">Проверка перекраски §-кодами (красится только белое/серое)</div>
     <div class="detail-meta">
       <div class="detail-field" data-copy="hex"><div class="label">HEX</div><div class="value" id="dHex">-</div></div>
       <div class="detail-field" data-copy="dec"><div class="label">Decimal</div><div class="value" id="dDec">-</div></div>
       <div class="detail-field" data-copy="char"><div class="label">Символ</div><div class="value" id="dChar">-</div></div>
       <div class="detail-field" data-copy="pos"><div class="label">Позиция</div><div class="value" id="dPos">-</div></div>
       <div class="detail-field" data-copy="php"><div class="label">PHP код</div><div class="value" id="dPHP">-</div></div>
-      <div class="detail-field" data-copy="size"><div class="label">Размер</div><div class="value" id="dSize">-</div></div>
+      <div class="detail-field" id="dStrayField"><div class="label">Стрэй-пиксели (α 1–9)</div><div class="value" id="dStray">-</div></div>
+      <div class="detail-field" id="dWidthField"><div class="label">Ширина в игре</div><div class="value" id="dWidth">-</div></div>
+      <div class="detail-field" data-copy="size"><div class="label">Ячейка</div><div class="value" id="dSize">-</div></div>
       <div class="detail-field wide" data-copy="full"><div class="label">Для PHP</div><div class="value" id="dFull">-</div></div>
     </div>
     <div class="detail-actions">
@@ -181,8 +262,39 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 <div class="copied-toast" id="toast">Скопировано!</div>
 
 <script>
+// ========== PAGE MAP DATA (актуально для RP km_pm5) ==========
+const PAGE_INFO = [
+  { hex:'B7', status:'occupied', desc:'Буквы/шрифт — белые, красятся §-кодами' },
+  { hex:'E0', status:'occupied', desc:'Иконки меню: статуи, топы, VK/TG/Xbox' },
+  { hex:'E1', status:'occupied', desc:'Иконки предметов/UI' },
+  { hex:'E2', status:'occupied', desc:'UI-элементы' },
+  { hex:'E3', status:'free',     desc:'РЕКОМЕНДУЕТСЯ для новых глифов' },
+  { hex:'E4', status:'occupied', desc:'NPC' },
+  { hex:'E5', status:'occupied', desc:'Иконки' },
+  { hex:'E6', status:'occupied', desc:'Ранги/привилегии (бейджи)' },
+  { hex:'E7', status:'occupied', desc:'Анархия' },
+  { hex:'E8', status:'occupied', desc:'Лого' },
+  { hex:'E9', status:'occupied', desc:'Иконки' },
+  { hex:'EA', status:'occupied', desc:'Иконки' },
+  { hex:'EB', status:'free', desc:'Свободна' },
+  { hex:'EC', status:'free', desc:'Свободна' },
+  { hex:'ED', status:'free', desc:'Свободна' },
+  { hex:'EE', status:'free', desc:'Свободна' },
+  { hex:'EF', status:'free', desc:'Свободна' },
+  { hex:'F0', status:'free', desc:'Свободна — работает как E-страницы' },
+  { hex:'F1', status:'free', desc:'Свободна' },
+  { hex:'F2', status:'free', desc:'Свободна' },
+  { hex:'F3', status:'free', desc:'Свободна' },
+  { hex:'F4', status:'free', desc:'Свободна' },
+  { hex:'F5', status:'free', desc:'Свободна' },
+  { hex:'F6', status:'free', desc:'Свободна' },
+  { hex:'F7', status:'free', desc:'Свободна' },
+];
+// glyph_E011.png существует на сервере — нестандартное легаси-имя, НЕ страница. Не создавать такие.
+
 // ========== STATE ==========
-const sheets = new Map(); // hex -> { img, cellSize, cells: Map<unicode, dataUrl> }
+const sheets = new Map(); // hex -> { cellSize, cells: Map<unicode, cellObj>, w, h, fullDataUrl }
+const LS_KEY = 'kmGlyphSheets_v2';
 
 // ========== TOAST ==========
 function toast(msg = 'Скопировано!') {
@@ -192,11 +304,10 @@ function toast(msg = 'Скопировано!') {
   setTimeout(() => t.classList.remove('show'), 1200);
 }
 
-// ========== CLOSE DETAIL ==========
 function closeDetail() { document.getElementById('overlay').classList.remove('active'); }
 
 // ========== PROCESS IMAGE ==========
-function processImage(img, hex) {
+function processImage(img, hex, skipSave) {
   hex = hex.toUpperCase();
   const cellSize = Math.floor(Math.min(img.width, img.height) / 16);
   const canvas = document.createElement('canvas');
@@ -223,47 +334,109 @@ function processImage(img, hex) {
     cctx.drawImage(canvas, x, y, cellSize, cellSize, 0, 0, cellSize, cellSize);
 
     const imgData = cctx.getImageData(0, 0, cellSize, cellSize);
-    let hasContent = false;
-    for (let p = 3; p < imgData.data.length; p += 4) {
-      if (imgData.data[p] > 10) { hasContent = true; break; }
+    const d = imgData.data;
+    let hasContent = false, strayCount = 0;
+    let minX = cellSize, maxX = -1;
+    for (let p = 0; p < d.length; p += 4) {
+      const a = d[p + 3];
+      if (a > 10) {
+        hasContent = true;
+        const px = (p / 4) % cellSize;
+        if (px < minX) minX = px;
+        if (px > maxX) maxX = px;
+      } else if (a >= 1) {
+        strayCount++;
+      }
     }
+    const effWidth = maxX >= 0 ? (maxX - minX + 1) : 0;
 
-    cells.set(hexCode, { dataUrl: cc.toDataURL(), hasContent, row, col, cellSize });
+    cells.set(hexCode, { dataUrl: hasContent || strayCount ? cc.toDataURL() : '', hasContent, strayCount, effWidth, row, col, cellSize });
   }
 
-  sheets.set(hex, { img, cellSize, cells });
+  sheets.set(hex, { cellSize, cells, w: img.width, h: img.height, fullDataUrl: canvas.toDataURL() });
   renderAllGrids();
   updateLoadedSheets();
+  renderPageMap();
+  if (!skipSave) saveSheets();
 }
 
-// ========== GENERATE EMPTY GRID ==========
-function generateEmpty(hex) {
-  hex = hex.toUpperCase();
-  const startChar = parseInt(hex + '00', 16);
-  const cells = new Map();
-  for (let i = 0; i < 256; i++) {
-    const code = startChar + i;
-    const hexCode = code.toString(16).toUpperCase().padStart(4, '0');
-    cells.set(hexCode, { dataUrl: '', hasContent: false, row: Math.floor(i/16), col: i%16, cellSize: 16 });
+// ========== PERSISTENCE ==========
+function saveSheets() {
+  try {
+    const store = {};
+    for (const [hex, s] of sheets) store[hex] = s.fullDataUrl;
+    localStorage.setItem(LS_KEY, JSON.stringify(store));
+  } catch (e) { /* quota — не критично */ }
+}
+function restoreSheets() {
+  try {
+    const store = JSON.parse(localStorage.getItem(LS_KEY) || '{}');
+    for (const hex of Object.keys(store)) {
+      const img = new Image();
+      img.onload = () => processImage(img, hex, true);
+      img.src = store[hex];
+    }
+  } catch (e) {}
+}
+function clearAll() {
+  sheets.clear();
+  localStorage.removeItem(LS_KEY);
+  renderAllGrids(); updateLoadedSheets(); renderPageMap();
+  toast('Очищено');
+}
+
+// ========== PAGE MAP ==========
+function renderPageMap() {
+  const el = document.getElementById('pageMap');
+  el.innerHTML = '';
+  for (const p of PAGE_INFO) {
+    const chip = document.createElement('div');
+    const isLoaded = sheets.has(p.hex);
+    chip.className = 'page-chip ' + (isLoaded ? 'loaded' : p.status);
+    const statusText = isLoaded ? 'загружена' : (p.status === 'free' ? 'свободна' : 'занята');
+    chip.innerHTML = `<div class="name">glyph_${p.hex}.png</div>
+      <div class="status">${statusText} · U+${p.hex}00–${p.hex}FF</div>
+      <div class="desc">${p.desc}</div>
+      ${p.status === 'free' && !isLoaded ? '<div class="dl">⬇</div>' : ''}`;
+    chip.addEventListener('click', () => {
+      if (isLoaded) {
+        const grid = document.querySelector(`.grid-wrap[data-sheet="${p.hex}"]`);
+        if (grid) grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else if (p.status === 'free') {
+        downloadBlankPage(p.hex);
+      } else {
+        toast(`glyph_${p.hex} занята — загрузи файл с сервера чтобы посмотреть`);
+      }
+    });
+    el.appendChild(chip);
   }
-  sheets.set(hex, { img: null, cellSize: 16, cells });
-  renderAllGrids();
-  updateLoadedSheets();
+}
+
+function downloadBlankPage(hex) {
+  const c = document.createElement('canvas');
+  c.width = 256; c.height = 256; // прозрачный, 16px ячейка
+  const a = document.createElement('a');
+  a.href = c.toDataURL('image/png');
+  a.download = `glyph_${hex}.png`;
+  a.click();
+  toast(`Пустой glyph_${hex}.png скачан (256×256)`);
 }
 
 // ========== RENDER ALL GRIDS ==========
 function renderAllGrids() {
   const container = document.getElementById('gridsContainer');
   container.innerHTML = '';
-
-  // Sort sheets by hex key
   const sortedKeys = [...sheets.keys()].sort();
 
   for (const hex of sortedKeys) {
     const sheet = sheets.get(hex);
+    let strayCells = 0;
+    for (const [, cell] of sheet.cells) if (cell.strayCount > 0) strayCells++;
+
     const wrap = document.createElement('div');
     wrap.className = 'grid-wrap';
-    wrap.innerHTML = `<div class="grid-section-label">glyph_${hex}.png ${sheet.img ? `— ${sheet.img.width}×${sheet.img.height}px, ячейка ${sheet.cellSize}px` : '— без изображения'}</div>`;
+    wrap.dataset.sheet = hex;
+    wrap.innerHTML = `<div class="grid-section-label"><span>glyph_${hex}.png — ${sheet.w}×${sheet.h}px, ячейка ${sheet.cellSize}px</span>${strayCells ? `<span class="stray-info">⚠ стрэй-пиксели в ${strayCells} ячейках</span>` : '<span style="color:var(--green)">✓ чисто</span>'}</div>`;
 
     const grid = document.createElement('div');
     grid.className = 'glyph-grid';
@@ -274,34 +447,27 @@ function renderAllGrids() {
       const ch = String.fromCodePoint(code);
 
       div.dataset.hex = hexCode;
-      div.dataset.char = ch;
-      div.dataset.row = cell.row;
-      div.dataset.col = cell.col;
-      div.dataset.w = cell.cellSize;
-      div.dataset.h = cell.cellSize;
-      div.dataset.img = cell.dataUrl;
       div.dataset.sheet = hex;
-      div.title = `U+${hexCode}`;
+      div.title = `U+${hexCode}` + (cell.strayCount ? ` ⚠ ${cell.strayCount} стрэй-пикс.` : '');
 
       if (cell.dataUrl) {
         div.style.backgroundImage = `url(${cell.dataUrl})`;
         div.classList.add('has-img');
         if (!cell.hasContent) div.classList.add('transparent');
+        if (cell.strayCount > 0) div.classList.add('stray');
       } else {
         div.textContent = ch;
         div.classList.add('transparent');
       }
-
       grid.appendChild(div);
     }
 
     wrap.appendChild(grid);
     container.appendChild(wrap);
 
-    // Click handler
     grid.addEventListener('click', e => {
-      const cell = e.target.closest('[data-hex]');
-      if (cell) showDetail(cell);
+      const cellEl = e.target.closest('[data-hex]');
+      if (cellEl) showDetail(cellEl.dataset.sheet, cellEl.dataset.hex);
     });
   }
 }
@@ -311,50 +477,116 @@ function updateLoadedSheets() {
   const el = document.getElementById('loadedSheets');
   el.innerHTML = '';
   for (const hex of [...sheets.keys()].sort()) {
-    const hasImg = sheets.get(hex).img !== null;
+    const sheet = sheets.get(hex);
+    let strayCells = 0;
+    for (const [, cell] of sheet.cells) if (cell.strayCount > 0) strayCells++;
     const tag = document.createElement('div');
     tag.className = 'sheet-tag';
-    tag.innerHTML = `<span class="dot" style="background:${hasImg ? 'var(--green)' : 'var(--orange)'}"></span>glyph_${hex}.png<span class="remove" data-hex="${hex}">✕</span>`;
+    tag.innerHTML = `<span class="dot"></span>glyph_${hex}.png${strayCells ? `<span class="stray-badge" title="ячеек со стрэй-пикселями">⚠${strayCells}</span>` : ''}<span class="remove" data-hex="${hex}">✕</span>`;
     el.appendChild(tag);
   }
   el.querySelectorAll('.remove').forEach(btn => {
     btn.addEventListener('click', () => {
       sheets.delete(btn.dataset.hex);
-      renderAllGrids();
-      updateLoadedSheets();
+      renderAllGrids(); updateLoadedSheets(); renderPageMap(); saveSheets();
     });
   });
+  const cw = document.getElementById('clearAllWrap');
+  cw.innerHTML = sheets.size ? '<a href="#" id="clearAllBtn" style="color:var(--red)">Очистить всё</a>' : '';
+  const cb = document.getElementById('clearAllBtn');
+  if (cb) cb.addEventListener('click', e => { e.preventDefault(); clearAll(); });
+}
+
+// ========== TINT (§ colors preview) ==========
+const TINTS = [
+  ['f','#FFFFFF'],['7','#AAAAAA'],['8','#555555'],['0','#000000'],
+  ['a','#55FF55'],['2','#00AA00'],['b','#55FFFF'],['3','#00AAAA'],
+  ['e','#FFFF55'],['6','#FFAA00'],['g','#DDD605'],['c','#FF5555'],
+  ['4','#AA0000'],['d','#FF55FF'],['5','#AA00AA'],['9','#5555FF'],['1','#0000AA'],
+];
+let currentCell = null; // {sheetHex, hexCode}
+
+function buildTintRow() {
+  const row = document.getElementById('tintRow');
+  row.innerHTML = '<div class="sw reset" title="Оригинал">↺</div>';
+  row.firstChild.addEventListener('click', () => applyTint(null));
+  for (const [code, color] of TINTS) {
+    const sw = document.createElement('div');
+    sw.className = 'sw';
+    sw.style.background = color;
+    sw.textContent = '§' + code;
+    sw.title = '§' + code;
+    sw.addEventListener('click', () => applyTint(color));
+    row.appendChild(sw);
+  }
+}
+
+function applyTint(color) {
+  if (!currentCell) return;
+  const sheet = sheets.get(currentCell.sheetHex);
+  if (!sheet) return;
+  const cell = sheet.cells.get(currentCell.hexCode);
+  const img = document.getElementById('detailImg');
+  if (!cell || !cell.dataUrl) return;
+  if (!color) { img.src = cell.dataUrl; return; }
+  const base = new Image();
+  base.onload = () => {
+    const c = document.createElement('canvas');
+    c.width = base.width; c.height = base.height;
+    const ctx = c.getContext('2d');
+    ctx.imageSmoothingEnabled = false;
+    ctx.drawImage(base, 0, 0);
+    const id = ctx.getImageData(0, 0, c.width, c.height);
+    const d = id.data;
+    const r = parseInt(color.slice(1,3),16)/255, g = parseInt(color.slice(3,5),16)/255, b = parseInt(color.slice(5,7),16)/255;
+    for (let p = 0; p < d.length; p += 4) {
+      d[p] *= r; d[p+1] *= g; d[p+2] *= b; // MCBE умножает текстуру на цвет текста
+    }
+    ctx.putImageData(id, 0, 0);
+    img.src = c.toDataURL();
+  };
+  base.src = cell.dataUrl;
 }
 
 // ========== SHOW DETAIL ==========
-function showDetail(cell) {
-  const hexCode = cell.dataset.hex;
+function showDetail(sheetHex, hexCode) {
+  const sheet = sheets.get(sheetHex);
+  if (!sheet) return;
+  const cell = sheet.cells.get(hexCode);
+  if (!cell) return;
+  currentCell = { sheetHex, hexCode };
+
   const code = parseInt(hexCode, 16);
   const ch = String.fromCodePoint(code);
-  const row = cell.dataset.row;
-  const col = cell.dataset.col;
-  const w = cell.dataset.w;
-  const imgSrc = cell.dataset.img;
-  const sheetHex = cell.dataset.sheet || '';
 
   document.getElementById('dHex').textContent = `0x${hexCode}`;
   document.getElementById('dDec').textContent = code;
   document.getElementById('dChar').textContent = ch;
-  document.getElementById('dPos').textContent = `glyph_${sheetHex} — R${row}C${col}`;
+  document.getElementById('dPos').textContent = `glyph_${sheetHex} — R${cell.row}C${cell.col}`;
   document.getElementById('dPHP').textContent = `"\\u{${hexCode}}"`;
-  document.getElementById('dSize').textContent = `${w}×${w}px`;
-  document.getElementById('dFull').textContent = `"\\u{${hexCode}}" // U+${hexCode} glyph_${sheetHex} R${row}C${col}`;
+  document.getElementById('dSize').textContent = `${cell.cellSize}×${cell.cellSize}px`;
+  document.getElementById('dFull').textContent = `"\\u{${hexCode}}" // U+${hexCode} glyph_${sheetHex} R${cell.row}C${cell.col}`;
+
+  const strayField = document.getElementById('dStrayField');
+  const strayVal = document.getElementById('dStray');
+  if (cell.strayCount > 0) {
+    strayField.className = 'detail-field warn';
+    strayVal.textContent = `⚠ ${cell.strayCount} шт — почистить!`;
+  } else {
+    strayField.className = 'detail-field ok';
+    strayVal.textContent = '✓ чисто';
+  }
+  document.getElementById('dWidth').textContent = cell.hasContent ? `${cell.effWidth}px из ${cell.cellSize}` : '—';
 
   const detailImg = document.getElementById('detailImg');
-  if (imgSrc) {
-    detailImg.src = imgSrc;
+  if (cell.dataUrl) {
+    detailImg.src = cell.dataUrl;
   } else {
     const c = document.createElement('canvas'); c.width=16; c.height=16;
     detailImg.src = c.toDataURL();
   }
   detailImg.dataset.hex = hexCode;
-  detailImg.dataset.char = ch;
-  detailImg.dataset.imgSrc = imgSrc || '';
+  detailImg.dataset.imgSrc = cell.dataUrl || '';
 
   document.getElementById('overlay').classList.add('active');
 }
@@ -370,21 +602,12 @@ document.getElementById('searchInput').addEventListener('input', function() {
     return;
   }
 
-  // Pad to 4 chars
   input = input.padStart(4, '0');
-  const sheetHex = input.slice(0, -2).replace(/^0+/, '') || '0';
+  const sheetHexGuess = (input.slice(0, -2).replace(/^0+/, '') || '0').toUpperCase();
 
-  // Search across all loaded sheets
-  let found = null;
-  let foundSheet = '';
-
+  let found = null, foundSheet = '';
   for (const [hex, sheet] of sheets) {
-    if (sheet.cells.has(input)) {
-      const cell = sheet.cells.get(input);
-      found = cell;
-      foundSheet = hex;
-      break;
-    }
+    if (sheet.cells.has(input)) { found = sheet.cells.get(input); foundSheet = hex; break; }
   }
 
   clearHighlights();
@@ -401,7 +624,7 @@ document.getElementById('searchInput').addEventListener('input', function() {
           <div><span class="label">PHP</span> <span class="val">"\\u{${input}}"</span></div>
           <div><span class="label">Символ</span> <span class="val" style="font-size:1.5rem">${ch}</span></div>
           <div><span class="label">Позиция</span> <span class="val">R${found.row}C${found.col}</span></div>
-          <div><span class="label">Содержимое</span> <span class="val">${found.hasContent ? '✅ Есть пиксели' : '⬜ Пусто'}</span></div>
+          <div><span class="label">Содержимое</span> <span class="val">${found.hasContent ? '✅ Есть пиксели' : '⬜ Пусто'}${found.strayCount ? ` <span style="color:var(--orange)">⚠ ${found.strayCount} стрэй</span>` : ''}</span></div>
           <div class="found-in">Найдено в glyph_${foundSheet}.png</div>
         </div>
       </div>
@@ -411,8 +634,6 @@ document.getElementById('searchInput').addEventListener('input', function() {
         <button class="btn btn-sm btn-outline" onclick="scrollToCell('${input}')">🎯 Перейти к ячейке</button>
       </div>
     `;
-
-    // Highlight cell in grid
     highlightCell(input);
   } else if (found) {
     const code = parseInt(input, 16);
@@ -428,27 +649,23 @@ document.getElementById('searchInput').addEventListener('input', function() {
         </div>
       </div>`;
   } else {
-    // Not in loaded sheets — suggest loading
-    const suggestHex = sheetHex.toUpperCase();
+    const pageInfo = PAGE_INFO.find(p => p.hex === sheetHexGuess);
+    const statusLine = pageInfo
+      ? (pageInfo.status === 'free'
+          ? `<p style="color:var(--green);font-size:.8rem;margin-top:8px">Страница glyph_${sheetHexGuess} СВОБОДНА — можно создать. Скачай шаблон в карте страниц выше.</p>`
+          : `<p style="color:var(--orange);font-size:.8rem;margin-top:8px">Страница glyph_${sheetHexGuess} занята на сервере — загрузи её PNG чтобы посмотреть.</p>`)
+      : `<p style="color:var(--text2);font-size:.8rem;margin-top:8px">Загрузи <b>glyph_${sheetHexGuess}.png</b> чтобы посмотреть эту ячейку.</p>`;
     resultEl.style.display = 'block';
-    resultEl.innerHTML = `
-      <div class="not-found">❌ U+${input} не найден в загруженных листах</div>
-      <p style="color:var(--text2);font-size:.8rem;margin-top:8px">Нужно загрузить <b>glyph_${suggestHex}.png</b></p>
-      <button class="btn btn-sm btn-green" style="margin-top:8px" onclick="generateEmpty('${suggestHex}');toast('Лист ${suggestHex} добавлен (без изображения)')">Добавить glyph_${suggestHex} (пустой)</button>
-    `;
+    resultEl.innerHTML = `<div class="not-found">❌ U+${input} не найден в загруженных листах</div>${statusLine}`;
   }
 });
 
 function highlightCell(hexCode) {
-  document.querySelectorAll(`.glyph-grid [data-hex="${hexCode}"]`).forEach(el => {
-    el.classList.add('highlight');
-  });
+  document.querySelectorAll(`.glyph-grid [data-hex="${hexCode}"]`).forEach(el => el.classList.add('highlight'));
 }
-
 function clearHighlights() {
   document.querySelectorAll('.glyph-grid .highlight').forEach(el => el.classList.remove('highlight'));
 }
-
 function scrollToCell(hexCode) {
   const cell = document.querySelector(`.glyph-grid [data-hex="${hexCode}"]`);
   if (cell) {
@@ -462,8 +679,8 @@ function scrollToCell(hexCode) {
 document.getElementById('fileInput').addEventListener('change', function(e) {
   const files = Array.from(e.target.files);
   files.forEach(file => {
-    const match = file.name.match(/glyph_([0-9A-Fa-f]{1,4})/i);
-    if (!match) { toast(`⚠ ${file.name} — не glyph_XX.png`); return; }
+    const match = file.name.match(/glyph_([0-9A-Fa-f]{2})\.(png)$/i) || file.name.match(/glyph_([0-9A-Fa-f]{2})/i);
+    if (!match) { toast(`⚠ ${file.name} — имя должно быть glyph_XX.png`); return; }
     const hex = match[1].toUpperCase();
 
     const reader = new FileReader();
@@ -474,6 +691,7 @@ document.getElementById('fileInput').addEventListener('change', function(e) {
     };
     reader.readAsDataURL(file);
   });
+  this.value = '';
 });
 
 // Drag & drop
@@ -489,13 +707,6 @@ uploadZone.addEventListener('drop', e => {
   input.dispatchEvent(new Event('change'));
 });
 
-// Quick buttons
-document.querySelectorAll('[data-hex]').forEach(btn => {
-  if (btn.tagName === 'BUTTON') {
-    btn.addEventListener('click', () => generateEmpty(btn.dataset.hex));
-  }
-});
-
 // ========== DETAIL INTERACTIONS ==========
 document.getElementById('overlay').addEventListener('click', e => { if (e.target === e.currentTarget) closeDetail(); });
 
@@ -503,7 +714,7 @@ let touchStartY = 0;
 document.getElementById('detailSheet').addEventListener('touchstart', e => { touchStartY = e.touches[0].clientY; });
 document.getElementById('detailSheet').addEventListener('touchmove', e => { if (e.touches[0].clientY - touchStartY > 80) closeDetail(); });
 
-document.querySelectorAll('.detail-field').forEach(f => {
+document.querySelectorAll('.detail-field[data-copy]').forEach(f => {
   f.addEventListener('click', () => {
     const v = f.querySelector('.value').textContent;
     if (v && v !== '-') navigator.clipboard.writeText(v).then(() => toast());
@@ -543,7 +754,9 @@ document.getElementById('convOutput').addEventListener('click', function() {
 });
 
 // ========== INIT ==========
-generateEmpty('E1');
+buildTintRow();
+renderPageMap();
+restoreSheets();
 </script>
 </body>
 </html>
